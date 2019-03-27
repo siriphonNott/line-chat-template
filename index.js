@@ -64,8 +64,10 @@ app.get('/', async (req, res) => {
 app.post('/webhook', async function (req, res) {
   console.log('==> POST: /webhook');
   let body = req.body;
-  var events = body.events[0];
-  var replyToken = events.replyToken;
+  let events = body.events[0];
+  let replyToken = events.replyToken;
+  let userId = events.source.userId || null;
+  let groupId = events.source.groupId || null;
   let jsonBody = {};
   let json = {};
   json.success = true;
@@ -73,6 +75,7 @@ app.post('/webhook', async function (req, res) {
   console.log(body);
   console.log(events.source);
   console.log(`==> [Event Type]: ${events.type}`);
+
   if (events.type === 'message') {
     console.log(`==> [Message Type]: ${events.message.type}`);
     console.log(events.message);
@@ -81,8 +84,6 @@ app.post('/webhook', async function (req, res) {
         console.log('==> [events] :');
         console.log(req.body.events);
         let text = events.message.text;
-        let groupId = events.source.groupId;
-        let userId = events.source.userId;
         let sender = (groupId === undefined) ? userId : groupId;
 
         console.log(`[Text]: ${text}`);
@@ -127,10 +128,8 @@ app.post('/webhook', async function (req, res) {
 
   } else if (events.type === 'follow' || events.type === 'unfollow') {
     console.log('==> [Events Type]: ' + events.type);
-
     database.ref(`users/${userId}`).once("value", async (snapshot) => {
 
-      let snapVal = snapshot.val()
       if (!snapshot.exists()) {
         jsonBody.createdAt = events.timestamp;
         jsonBody.updatedAt = events.timestamp;
@@ -167,6 +166,7 @@ app.post('/webhook', async function (req, res) {
                 console.log('==> [Error]: ');
                 console.log(e);
               })
+
           }
         })
         .catch(function (error) {
