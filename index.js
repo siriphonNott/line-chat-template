@@ -158,9 +158,20 @@ app.post('/webhook', async function (req, res) {
                 console.log('==> [Add profile successfully]');
               }
             });
-            pushMessage(events.source.userId, `Welcome to Botty :)`)
+            let greetingMessage = [
+              {
+                type: "text",
+                text: `Hello  ${profile.displayName} \n Welcome to Botty Chat Bot :)\n\nStatus: ${profile.statusMessage || '-'}`
+             },
+              {
+                type: "image",
+                originalContentUrl: profile.pictureUrl,
+                previewImageUrl: profile.pictureUrl,
+              }
+          ]
+            pushMessage(events.source.userId, greetingMessage)
               .then((res) => {
-                console.log(res);
+                console.log('==> [Push Greeting message successfully]');
               })
               .catch((e) => {
                 console.log('==> [Error]: ');
@@ -214,7 +225,7 @@ const replyMessage = async (replyToken, message) => {
 
 const pushMessage = async (userId, message) => {
   let json = {};
-  console.log('==> [userId]: ' + userId);
+  console.log('==> [pushMessage]: [userId]: ' + userId);
   console.log(message);
   return new Promise((resolve, reject) => {
     client.pushMessage(userId, message)
