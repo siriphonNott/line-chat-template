@@ -146,6 +146,7 @@ app.post('/webhook', async function (req, res) {
 
         // console.log('Push.key -> ' + newPostRef.key);
 
+        //Get Profile
         client.getProfile(userId)
         .then(function (profile) {
           console.log('[Get Profile]: successfully!');
@@ -161,7 +162,7 @@ app.post('/webhook', async function (req, res) {
             let greetingMessage = [
               {
                 type: "text",
-                text: `Hello  ${profile.displayName} \n Welcome to Botty Chat Bot :)\n\nStatus: ${profile.statusMessage || '-'}`
+                text: `Hello  ${profile.displayName} \n\nWelcome to Botty Chat Bot :)\n\nStatus: ${profile.statusMessage || '-'}`
              },
               {
                 type: "image",
@@ -193,6 +194,47 @@ app.post('/webhook', async function (req, res) {
         updates[`users/${userId}/updatedAt`] = events.timestamp;
         database.ref().update(updates);
         console.log('==> [User update successfully]');
+        
+        //Get Profile
+        client.getProfile(userId)
+        .then(function (profile) {
+          console.log('[Get Profile]: successfully!');
+          console.log(profile);
+          if(profile) {
+            database.ref(`users/${userId}/profile`).set(profile, function (error) {
+              if (error) {
+                console.log('==> [Add profile fail]: ' + error);
+              } else {
+                console.log('==> [Add profile successfully]');
+              }
+            });
+            let greetingMessage = [
+              {
+                type: "text",
+                text: `Hello  ${profile.displayName} \n\nWelcome to Botty Chat Bot :)\n\nStatus: ${profile.statusMessage || '-'}`
+             },
+              {
+                type: "image",
+                originalContentUrl: profile.pictureUrl,
+                previewImageUrl: profile.pictureUrl,
+              }
+          ]
+            pushMessage(events.source.userId, greetingMessage)
+              .then((res) => {
+                console.log('==> [Push Greeting message successfully]');
+              })
+              .catch((e) => {
+                console.log('==> [Error]: ');
+                console.log(e);
+              })
+
+          }
+        })
+        .catch(function (error) {
+          console.log('[Get Profile]: Error');
+          console.log(error);
+          reject(error);
+        });
       }
     });
   }
