@@ -1,6 +1,6 @@
 const config = {
     appName: 'Line Chat Bot',
-    channelAccessToken: 'X6qnjbYGi8NbtMJgi3qNE2HPFAbpxrrUxsMY1dHi75M4TwVMDE9bVpnC74CR823GrKAQsx3Ea6LujmWr3hFpRuqnkHWiFxO7HBdzWLH7VUGZCOUuNG4Q9bAfVUCx6nO8cX1CQe/lXYd+++kaNHagSwdB04t89/1O/w1cDnyilFU=',
-    channelSecret: '6db24a626ca4fda87473c63c8d322e41',
+    channelAccessToken: 'kbHe+0XH1G5aXIRxzUZHr0UggxswKqbeOT4xDIsloLnYyNWfsnwVWx02rmt2NUMY+ISwL9Z4mn+XhAYQTDypvTpOXWsLzM94ZoZaXoD0JrrohTGzehzrDVfqc5kQPxtOXrX3VlOrsaUhTsgkKgv1CAdB04t89/1O/w1cDnyilFU=',
+    channelSecret: '87a0e19ae700ea68d5d5380aac08187c',
 }
 exports.config = config;

@@ -136,7 +136,7 @@ app.post('/webhook', async function (req, res) {
         jsonBody.follow = events.type;
         jsonBody.replyToken = '';
 
-        let newPostRef = database.ref(`users/${userId}`).push(jsonBody, function (error) {
+       database.ref(`users/${userId}`).set(jsonBody, function (error) {
           if (error) {
             console.log('==> [User add fail]: ' + error);
           } else {
@@ -144,7 +144,7 @@ app.post('/webhook', async function (req, res) {
           }
         });
 
-        console.log('Push.key -> ' + newPostRef.key);
+        // console.log('Push.key -> ' + newPostRef.key);
 
         client.getProfile(userId)
         .then(function (profile) {
