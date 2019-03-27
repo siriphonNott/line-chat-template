@@ -147,45 +147,47 @@ app.post('/webhook', async function (req, res) {
         // console.log('Push.key -> ' + newPostRef.key);
 
         //Get Profile
-        client.getProfile(userId)
-        .then(function (profile) {
-          console.log('[Get Profile]: successfully!');
-          console.log(profile);
-          if(profile) {
-            database.ref(`users/${userId}/profile`).set(profile, function (error) {
-              if (error) {
-                console.log('==> [Add profile fail]: ' + error);
-              } else {
-                console.log('==> [Add profile successfully]');
-              }
-            });
-            let greetingMessage = [
-              {
-                type: "text",
-                text: `Hello  ${profile.displayName} \n\nWelcome to Botty Chat Bot :)\n\nStatus: ${profile.statusMessage || '-'}`
-             },
-              {
-                type: "image",
-                originalContentUrl: profile.pictureUrl,
-                previewImageUrl: profile.pictureUrl,
-              }
-          ]
-            pushMessage(events.source.userId, greetingMessage)
-              .then((res) => {
-                console.log('==> [Push Greeting message successfully]');
-              })
-              .catch((e) => {
-                console.log('==> [Error]: ');
-                console.log(e);
-              })
+        if(events.type === 'follow') {
+          client.getProfile(userId)
+          .then(function (profile) {
+            console.log('[Get Profile]: successfully!');
+            console.log(profile);
+            if(profile) {
+              database.ref(`users/${userId}/profile`).set(profile, function (error) {
+                if (error) {
+                  console.log('==> [Add profile fail]: ' + error);
+                } else {
+                  console.log('==> [Add profile successfully]');
+                }
+              });
+              let greetingMessage = [
+                {
+                  type: "text",
+                  text: `Hello  ${profile.displayName} \n\nWelcome to Botty Chat Bot :)\n\nStatus: ${profile.statusMessage || '-'}`
+              },
+                {
+                  type: "image",
+                  originalContentUrl: profile.pictureUrl,
+                  previewImageUrl: profile.pictureUrl,
+                }
+            ]
+              pushMessage(events.source.userId, greetingMessage)
+                .then((res) => {
+                  console.log('==> [Push Greeting message successfully]');
+                })
+                .catch((e) => {
+                  console.log('==> [Error]: ');
+                  console.log(e);
+                })
 
-          }
-        })
-        .catch(function (error) {
-          console.log('[Get Profile]: Error');
-          console.log(error);
-          reject(error);
-        });
+            }
+          })
+          .catch(function (error) {
+            console.log('[Get Profile]: Error');
+            console.log(error);
+            reject(error);
+          });
+        }
 
       } else {
         
