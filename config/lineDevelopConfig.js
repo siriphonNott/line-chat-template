@@ -1,7 +1,7 @@
 const config = {
-    appName: 'BOT Cute',
-    channelAccessToken: 'rs8LoIPXlY7SIRTQ9Duhg2gHxjFvIIVx8HEVkYl1sCrqSlg1k1kAIFvbxrSUKh0LgJiZZvdQHmpv6SGkaCuvDYj+8iMXQbRYZQ2kso42oiX3VLEHi9UQMolLbkYxUjQ7F2nl51jPasqNvRvuRLdjkgdB04t89/1O/w1cDnyilFU=',
-    channelSecret: 'b44e5277a0070a3e4c85f821d23d8780',
-    channelID: '1578647149'
+    appName: 'THAI-POST BOT',
+    channelAccessToken: 'YGjdDU5380vqQBBQrf48hVIJ78bmtCFMzhigGvSAc2IlM8qcVxsh2xc9ZJhn4vxnxVJYf5ZXH1mlDsUChxobZa4TgkhzOKSn2DrUdJ0uMx91wFiFhuY3yVeKcReLGv0K1ZS91kyn8zhOfwe5Rya9ugdB04t89/1O/w1cDnyilFU=',
+    channelSecret: '900e42d4343854de0ac6e05aa4549847',
+    channelID: '1621754243'
 }
 exports.config = config;
