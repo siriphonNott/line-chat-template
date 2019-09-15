@@ -1,12 +1,13 @@
 const firebase = require('firebase-admin');
 const app = require('express')();
-const port = process.env.PORT || 7777;
+const port = process.env.PORT || 3001;
 const cors = require('cors');
+const thaiPost = require('./services/thaiPost');
 
 const bodyParser = require('body-parser');
 app.use(cors());
 // app.use(cors({
-//   origin: ["http://localhost:3000", "https://nottdev.com/live-chat", "http://nottdev.com:5000"],
+//   origin: ["http://localhost:3001", "https://nottdev.com/live-chat", "http://nottdev.com:5000"],
 // }));
 
 // parse application/json
@@ -53,11 +54,22 @@ const getProfile = (userId) => {
 }
 
 app.get('/', async (req, res) => {
-  database.ref(`users/`).once("value", async (snapshot) => {
-    console.log(snapshot.val());
-  });
+  // database.ref(`users/`).once("value", async (snapshot) => {
+  //   console.log(snapshot.val());
+  // });
   res.json({
     status: 'ok'
+  });
+});
+
+app.get('/post/:id', async (req, res) => {
+  console.log('/post/'+req.params.id);
+  
+  let emsid = req.params.id;
+  let result = await thaiPost.getTracking(emsid);
+  res.json({
+    status: 'ok',
+    data: result
   });
 });
 
