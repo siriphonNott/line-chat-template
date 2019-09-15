@@ -104,11 +104,17 @@ app.post('/webhook', async function (req, res) {
         console.log(`[typeof text]: ${typeof text}`);
         console.log(`----------------------`);
 
-        let result = await thaiPost.getTracking(emsid);
-        let msg = result==null ? "หมายเลขไม่ถูกต้อง กรุณาพิมพ์ใหม่อีกครั้ง" : result[result.length - 1] ;
+        let resMsg = "";
+        if(text.length == 13) {
+          let result = await thaiPost.getTracking(text);
+          resMsg = result==null ? "หมายเลขไม่ถูกต้อง กรุณาพิมพ์ใหม่อีกครั้ง" : result[result.length - 1];
+        } else {
+          resMsg = "รูปแบบของหมายเลขไม่ถูกต้อง (13 หลัก) กรุณาพิมพ์ใหม่อีกครั้ง";
+        }
+
         const message = {
           type: 'text',
-          text: msg
+          text: resMsg
         };
 
         if (message.text !== '') {
@@ -173,24 +179,24 @@ app.post('/webhook', async function (req, res) {
                     console.log('==> [Add profile successfully]');
                   }
                 });
-                let greetingMessage = [{
-                    type: "text",
-                    text: `Hello  ${profile.displayName} \n\nWelcome to Botty Chat Bot :)\n\nStatus: ${profile.statusMessage || '-'}`
-                  },
-                  {
-                    type: "image",
-                    originalContentUrl: profile.pictureUrl,
-                    previewImageUrl: profile.pictureUrl,
-                  }
-                ]
-                pushMessage(events.source.userId, greetingMessage)
-                  .then((res) => {
-                    console.log('==> [Push Greeting message successfully]');
-                  })
-                  .catch((e) => {
-                    console.log('==> [Error]: ');
-                    console.log(e);
-                  })
+                // let greetingMessage = [{
+                //     type: "text",
+                //     text: `Hello  ${profile.displayName} \n\nWelcome to Botty Chat Bot :)\n\nStatus: ${profile.statusMessage || '-'}`
+                //   },
+                //   {
+                //     type: "image",
+                //     originalContentUrl: profile.pictureUrl,
+                //     previewImageUrl: profile.pictureUrl,
+                //   }
+                // ]
+                // pushMessage(events.source.userId, greetingMessage)
+                //   .then((res) => {
+                //     console.log('==> [Push Greeting message successfully]');
+                //   })
+                //   .catch((e) => {
+                //     console.log('==> [Error]: ');
+                //     console.log(e);
+                //   })
 
               }
             })
