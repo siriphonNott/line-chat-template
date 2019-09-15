@@ -64,13 +64,12 @@ app.get('/', async (req, res) => {
 
 app.get('/post/:id', async (req, res) => {
   console.log('/post/'+req.params.id);
-  
+  let resBody = {};
   let emsid = req.params.id;
   let result = await thaiPost.getTracking(emsid);
-  res.json({
-    status: 'ok',
-    data: result
-  });
+  resBody['success'] = result!=null;
+  resBody['data'] = result;
+  res.send(resBody);
 });
 
 app.post('/webhook', async function (req, res) {
@@ -105,9 +104,11 @@ app.post('/webhook', async function (req, res) {
         console.log(`[typeof text]: ${typeof text}`);
         console.log(`----------------------`);
 
+        let result = await thaiPost.getTracking(emsid);
+        let msg = result==null ? "หมายเลขไม่ถูกต้อง กรุณาพิมพ์ใหม่อีกครั้ง" : result[result.length - 1] ;
         const message = {
           type: 'text',
-          text: text
+          text: msg
         };
 
         if (message.text !== '') {
